@@ -16,6 +16,7 @@ const orderSchema = new Schema(
         order_items: [{
             type: Schema.Types.ObjectId, ref: "Product"
         }],
+        date: { type: Date, required: true }
     },
     {
         // this second object adds extra properties: `createdAt` and `updatedAt`
