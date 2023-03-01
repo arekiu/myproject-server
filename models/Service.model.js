@@ -1,18 +1,17 @@
 const { Schema, model } = require("mongoose");
 
-// TODO: Please make sure you edit the User model to whatever makes sense in this case
-const productSchema = new Schema(
+
+const serviceSchema = new Schema(
     {
-        product_id: {
-            type: String,
-            unique: true,
-            },
         name: {
-        type: String,
-        required: [true, "Name is required."],
-        },
+            type: String,
+            required: [true, 'Name is required.'],
+            unique: true,
+            trim: true
+            },
         price: {
-            type: Number
+            type: Number,
+            required: [true, "Price is required."],
         },
         description: {
             type: String
@@ -27,6 +26,8 @@ const productSchema = new Schema(
     }
     );
 
-const Product = model("Product", productSchema);
+const Service = model("Service", serviceSchema);
 
-module.exports = Product;
+module.exports = Service;
+
+

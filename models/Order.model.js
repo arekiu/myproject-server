@@ -14,7 +14,7 @@ const orderSchema = new Schema(
             type: Schema.Types.ObjectId, ref: "User"
         },
         order_items: [{
-            type: Schema.Types.ObjectId, ref: "Product"
+            type: Schema.Types.ObjectId, ref: "Service"
         }],
         date: { type: Date, required: true }
     },
