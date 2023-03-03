@@ -2,18 +2,29 @@ const express = require("express");
 const router = express.Router();
     
 const mongoose = require("mongoose");
-    
+const fileUploader = require("../config/cloudinary.config");    
 const Service = require("../models/Service.model");
 
     
-    //  POST /api/projects  -  Creates a new project
+    //  POST /ULPOAD THE IMAGE
+    router.post("/upload", fileUploader.single("image"), (req, res, next) => {
+ 
+        if (!req.file) {
+          next(new Error("No file uploaded!"));
+          return;
+        }
+        
+        res.json({ image: req.file.path });
+      });
+
+
     router.post("/services", (req, res, next) => {
-    const { name, description, price, image } = req.body;
-    console.log(req.body)
-    Service.create({ name, description, price, image})
-        .then(response => res.json(response))
-        .catch(err => res.json(err));
-    });
+        Service.create(req.body)
+        .then(response => {
+          res.status(201).json({message: "Service created"})
+        })
+        .catch(err => console.log(err))
+    })
     
 
     router.get("/services", (req, res, next) => {
