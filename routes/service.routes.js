@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { isAuthenticated } = require("../middleware/jwt.middleware.js");
     
 const mongoose = require("mongoose");
 const fileUploader = require("../config/cloudinary.config");    
@@ -27,7 +28,7 @@ const Service = require("../models/Service.model");
     })
     
 
-    router.get("/services", (req, res, next) => {
+    router.get("/services",isAuthenticated, (req, res, next) => {
         Service.find()
             .then(allServices => res.json(allServices))
             .catch(err => res.json(err));
