@@ -34,8 +34,8 @@ const Service = require("../models/Service.model");
             .catch(err => res.json(err));
         });
 
-        // PUT  /api/services/:serviceId  -  Updates a specific service by id
-router.put("/services/:serviceId", (req, res, next) => {
+        // PUT  /api/editservices/:serviceId  -  Updates a specific service by id
+router.put("/editservices/:serviceId", (req, res, next) => {
   const { serviceId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(serviceId)) {
@@ -48,8 +48,8 @@ router.put("/services/:serviceId", (req, res, next) => {
     .catch((error) => res.json(error));
 });
 
-// DELETE  /api/services/:serviceId  -  Deletes a specific service by id
-router.delete("/services/:serviceId", (req, res, next) => {
+// DELETE  /api/editservices/:serviceId  -  Deletes a specific service by id
+router.delete("/editservices/:serviceId", (req, res, next) => {
   const { serviceId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(serviceId)) {
@@ -65,5 +65,60 @@ router.delete("/services/:serviceId", (req, res, next) => {
     )
     .catch((error) => res.json(error));
 });
+
+router.get("/editservices",isAuthenticated, (req, res, next) => {
+  Service.find()
+      .then(allServices => res.json(allServices))
+      .catch(err => res.json(err));
+  });
+
+  router.get("/editservices/:serviceId", (req, res, next) => {
+    const { serviceId } = req.params;
+  
+    if (!mongoose.Types.ObjectId.isValid(serviceId)) {
+      res.status(400).json({ message: "Specified id is not valid" });
+      return;
+    }
+  
+    // Each Project document has `tasks` array holding `_id`s of Task documents
+    // We use .populate() method to get swap the `_id`s for the actual Task documents
+    Service.findById(serviceId)
+      .then((service) => res.status(200).json(service))
+      .catch((error) => res.json(error));
+  });
+
+  // PUT  /api/editservices/:serviceId  -  Updates a specific project by id
+router.put("/editservices/:serviceId", (req, res, next) => {
+  const { serviceId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(serviceId)) {
+    res.status(400).json({ message: "Specified id is not valid" });
+    return;
+  }
+
+  Service.findByIdAndUpdate(serviceId, req.body, { new: true })
+    .then((updatedService) => res.json(updatedService))
+    .catch((error) => res.json(error));
+});
+
+
+// DELETE  /api/services/:serviceId  -  Deletes a specific project by id
+router.delete("/editservices/:serviceId", (req, res, next) => {
+  const { serviceId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(serviceId)) {
+    res.status(400).json({ message: "Specified id is not valid" });
+    return;
+  }
+
+  Service.findByIdAndRemove(serviceId)
+    .then(() =>
+      res.json({
+        message: `Service with ${serviceId} is removed successfully.`,
+      })
+    )
+    .catch((error) => res.json(error));
+});
+
 
 module.exports = router;
