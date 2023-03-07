@@ -34,4 +34,36 @@ const Service = require("../models/Service.model");
             .catch(err => res.json(err));
         });
 
+        // PUT  /api/services/:serviceId  -  Updates a specific service by id
+router.put("/services/:serviceId", (req, res, next) => {
+  const { serviceId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(serviceId)) {
+    res.status(400).json({ message: "Specified id is not valid" });
+    return;
+  }
+
+  Service.findByIdAndUpdate(serviceId, req.body, { new: true })
+    .then((updatedService) => res.json(updatedService))
+    .catch((error) => res.json(error));
+});
+
+// DELETE  /api/services/:serviceId  -  Deletes a specific service by id
+router.delete("/services/:serviceId", (req, res, next) => {
+  const { serviceId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(serviceId)) {
+    res.status(400).json({ message: "Specified id is not valid" });
+    return;
+  }
+
+  ServiceWorkerContainer.findByIdAndRemove(serviceId)
+    .then(() =>
+      res.json({
+        message: `Service with ${serviceId} is removed successfully.`,
+      })
+    )
+    .catch((error) => res.json(error));
+});
+
 module.exports = router;
