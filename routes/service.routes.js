@@ -103,7 +103,7 @@ router.put("/editservices/:serviceId", (req, res, next) => {
 
 
 // DELETE  /api/services/:serviceId  -  Deletes a specific project by id
-router.delete("/editservices/:serviceId", (req, res, next) => {
+router.delete("/services/:serviceId", (req, res, next) => {
   const { serviceId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(serviceId)) {
