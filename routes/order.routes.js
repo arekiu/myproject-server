@@ -35,10 +35,10 @@ router.get("/order",isAuthenticated, (req, res, next) => {
     router.post("/appointment", (req, res, next) => {
         let appointmentId 
         const unavailable = req.body
-        console.log("EL BOOOODYYYYY:", req.body)
+        
         Appointment.findOne({})
         .then((appointment) => {
-            console.log("EL APOIMENTTTT" ,appointment)
+            
             appointmentId = appointment._id
             Appointment.findByIdAndUpdate(appointmentId, {$push: {"unavailable" : unavailable}},{ new: true })
             .then(updatedArray => {
@@ -51,21 +51,12 @@ router.get("/order",isAuthenticated, (req, res, next) => {
     })
 
     router.get("/appointment",(req, res, next) => {
-        let appointmentId 
-        Appointment.findOne({})
-        .then((appointment) => {
-            appointmentId = appointment._id
-        })
 
-        Appointment.findById(appointmentId)
-        .then((appointments) => {
-            res.json(appointments.unavailable)
-        })
-        .catch((error) => {
-            console.error("Error finding appointments:", error);
-          });
+
+        Appointment.find()
+            .then(appointments => res.json(appointments))
+            .catch(err => res.json(err));
     })   
-
 
 
 
