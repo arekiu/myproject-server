@@ -1,6 +1,5 @@
 const router = require("express").Router();
 const Appointment = require("../models/Appointment.model");
-const mongoose = require("mongoose");
 const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 
  
@@ -19,7 +18,7 @@ Appointment.findOne({})
         });
     } else {
       // An appointment already exists, do nothing
-      console.log("Appointment already exists:", appointment);
+      console.log("Appointment already exists:" /*, appointment*/);
     }
   })
   .catch((error) => {
@@ -47,7 +46,7 @@ router.get("/order",isAuthenticated, (req, res, next) => {
             .catch((err=> console.log(err)))
         })
         .catch((err=> console.log(err)))
-       
+      
     })
 
     router.get("/appointment",(req, res, next) => {
