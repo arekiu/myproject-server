@@ -28,7 +28,7 @@ const Service = require("../models/Service.model");
     })
     
 
-    router.get("/services",isAuthenticated, (req, res, next) => {
+    router.get("/services", (req, res, next) => {
         Service.find()
             .then(allServices => res.json(allServices))
             .catch(err => res.json(err));
